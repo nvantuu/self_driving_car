@@ -1,3 +1,5 @@
+import keras
+
 print("...")
 
 import os
@@ -40,9 +42,13 @@ print("...")
 
 sio = socketio.Server()
 app = Flask(__name__)  # '__main__'
+model = None
 print("...")
 
-maxSpeed = 10
+MAX_SPEED = 25
+MIN_SPEED = 10
+speed_limit = MAX_SPEED
+maxSpeed = 25
 
 
 def preProcess(img):
@@ -57,6 +63,7 @@ def preProcess(img):
 @sio.on('telemetry')
 def telemetry(sid, data):
     speed = float(data['speed'])
+    print(f'speed: {speed}')
     image = Image.open(BytesIO(base64.b64decode(data['image'])))
     image = np.asarray(image)
     image = preProcess(image)
@@ -77,16 +84,25 @@ def sendControl(steering, throttle):
     sio.emit('steer', data={
         'steering_angle': steering.__str__(),
         'throttle': throttle.__str__()
-    })
+    },skip_sid=True)
 
 
 if __name__ == '__main__':
     print(os.getcwd())
     model_path = os.path.join(os.getcwd(), 'best_model.h5')
+    print(model_path)
     print("OK")
-    model = load_model(model_path)
+
+    model = keras.models.load_model(model_path)
+    print("model loaded successfully")
+
+    # wrap Flask application with engineio's middleware
     app = socketio.Middleware(sio, app)
+    print("app initialized successfully")
+
     ### LISTEN TO PORT 4567
-    print("CDE")
+    # deploy as an eventlet WSGI server
     eventlet.wsgi.server(eventlet.listen(('', 4567)), app)
-    print("ABC")
+    print("terminal")
+
+

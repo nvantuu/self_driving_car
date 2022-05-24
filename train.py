@@ -1,3 +1,4 @@
+import keras
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -26,25 +27,25 @@ if __name__ == '__main__':
 
 
     def createModel():
-        net = tf.keras.Sequential()
+        net = keras.Sequential()
 
-        net.add(tf.keras.layers.Lambda(lambda x: x / 127.5 - 1.0, input_shape=(66, 200, 3)))
-        net.add(tf.keras.layers.Conv2D(24, (5, 5), (2, 2), activation='elu'))
-        net.add(tf.keras.layers.Conv2D(36, (5, 5), (2, 2), activation='elu'))
-        net.add(tf.keras.layers.Conv2D(48, (5, 5), (2, 2), activation='elu'))
-        net.add(tf.keras.layers.Conv2D(64, (3, 3), activation='elu'))
-        net.add(tf.keras.layers.Conv2D(64, (3, 3), activation='elu'))
+        net.add(keras.layers.Lambda(lambda x: x / 127.5 - 1.0, input_shape=(66, 200, 3)))
+        net.add(keras.layers.Conv2D(24, (5, 5), (2, 2), activation='elu'))
+        net.add(keras.layers.Conv2D(36, (5, 5), (2, 2), activation='elu'))
+        net.add(keras.layers.Conv2D(48, (5, 5), (2, 2), activation='elu'))
+        net.add(keras.layers.Conv2D(64, (3, 3), activation='elu'))
+        net.add(keras.layers.Conv2D(64, (3, 3), activation='elu'))
 
-        net.add(tf.keras.layers.Flatten())
-        net.add(tf.keras.layers.Dense(100, activation='elu'))
-        net.add(tf.keras.layers.Dense(50, activation='elu'))
-        net.add(tf.keras.layers.Dense(10, activation='elu'))
-        net.add(tf.keras.layers.Dense(1, activation='tanh'))
+        net.add(keras.layers.Flatten())
+        net.add(keras.layers.Dense(100, activation='elu'))
+        net.add(keras.layers.Dense(50, activation='elu'))
+        net.add(keras.layers.Dense(10, activation='elu'))
+        net.add(keras.layers.Dense(1, activation='tanh'))
 
-        net.compile(tf.keras.optimizers.Adam(lr=1.0e-4), loss='mse')
+        net.compile(tf.optimizers.Adam(lr=1.0e-4), loss='mse')
         return net
 
-    best_model = tf.keras.callbacks.ModelCheckpoint('best_model_1_epoch.h5',
+    best_model = keras.callbacks.ModelCheckpoint('best_model.h5',
                                                     monitor='val_loss',
                                                     verbose=1,
                                                     save_best_only=True,
