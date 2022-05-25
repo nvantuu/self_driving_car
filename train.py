@@ -45,7 +45,7 @@ if __name__ == '__main__':
         net.compile(tf.optimizers.Adam(lr=1.0e-4), loss='mse')
         return net
 
-    best_model = keras.callbacks.ModelCheckpoint('best_model.h5',
+    best_model = keras.callbacks.ModelCheckpoint('best_model_1_epoch.h5',
                                                     monitor='val_loss',
                                                     verbose=1,
                                                     save_best_only=True,

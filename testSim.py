@@ -45,10 +45,7 @@ app = Flask(__name__)  # '__main__'
 model = None
 print("...")
 
-MAX_SPEED = 25
-MIN_SPEED = 10
-speed_limit = MAX_SPEED
-maxSpeed = 25
+maxSpeed = 15
 
 
 def preProcess(img):
@@ -89,7 +86,9 @@ def sendControl(steering, throttle):
 
 if __name__ == '__main__':
     print(os.getcwd())
-    model_path = os.path.join(os.getcwd(), 'best_model.h5')
+    # model_path = os.path.join(os.getcwd(), 'best_model_1_epoch.h5')
+    model_path = os.path.join(os.getcwd(), 'best_model_20_epoch.h5')
+    # model_path = os.path.join(os.getcwd(), 'model.h5')
     print(model_path)
     print("OK")
 
